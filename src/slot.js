@@ -3,6 +3,7 @@ var game = new Phaser.Game(850, 600, Phaser.CANVAS, '', { preload: preload, crea
 var items = ['bell', 'cherry', 'diamond', 'emerald', 'goldbar', 'goldclover', 'goldenseven', 'grape', 
                 'greenbar', 'greenclover', 'heart', 'horseshoe', 'lemon', 'plum', 'redbar', 'redseven', 'ruby', 'watermelon'];
 
+//blur items
 var items_b = ['bell_b', 'cherry_b', 'diamond_b', 'emerald_b', 'goldbar_b', 'goldclover_b', 'goldenseven_b', 'grape_b', 
                 'greenbar_b', 'greenclover_b', 'heart_b', 'horseshoe_b', 'lemon_b', 'plum_b', 'redbar_b', 'redseven_b', 'ruby_b', 'watermelon_b'];
 
@@ -97,22 +98,27 @@ function create() {
     game.stage.backgroundColor = '#182d3b';
 
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //Scale menadzer, za full scren ili slicno
-    game.input.onDown.add(gofull, this);
-
+    //game.input.onDown.add(gofull, this);
+    //var fkey = game.input.keyboard.addKey(Phaser.Keyboard.F);
+    game.input.keyboard.addCallbacks(this, null, null, gofull);
     myLoop = game.time.events.loop(Phaser.Timer.SECOND/100, updateCounter, this);
     
 }
 
-function gofull() {
+function gofull(char) {
 
-    if (game.scale.isFullScreen)
-    {
-        game.scale.stopFullScreen();
+    if (char == "f") {
+
+        if (game.scale.isFullScreen)
+        {
+            game.scale.stopFullScreen();
+        }
+        else
+        {
+            game.scale.startFullScreen(false);
+        }
     }
-    else
-    {
-        game.scale.startFullScreen(false);
-    }
+
 
 }
 
