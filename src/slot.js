@@ -11,10 +11,7 @@ var button, btnStop;
 var speed = 0, SPEED_MAX = 50;
 var sb1, sb2, sb3, sb4, sb5;
 var text = 0;
-var tocakBlur1;
-var tocakBlur1tmp;
-var tocakBlur2;
-var tocakBlur3;
+
 var tocak1, tocak1tmp;
 var tocak2, tocak2tmp;
 var tocak3, tocak3tmp;
@@ -84,7 +81,7 @@ function preload() {
 function create() {
     game.stage.disableVisibilityChange = true;      //----------------- ovo je ako zelimo da se vrti i kad prozor izgubi fokus
     
-    //game.stage.backgroundColor = '#ffffff' 
+    //game.stage.backgroundColor = '#FFFFFF' 
     //var body = game.add.sprite(0,0, 'machine_body'); 
 
     fx = game.add.audio('sfx');
@@ -93,15 +90,15 @@ function create() {
     
     //fx.addMarker('start', 9, 0.2);
     
-    vockice();
+    vockice();  //poziva funkciju za definisanje tockova
 
-    game.stage.backgroundColor = '#182d3b';
+    game.stage.backgroundColor = '#2E4367';
 
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //Scale menadzer, za full scren ili slicno
     //game.input.onDown.add(gofull, this);
     //var fkey = game.input.keyboard.addKey(Phaser.Keyboard.F);
     game.input.keyboard.addCallbacks(this, null, null, gofull);
-    myLoop = game.time.events.loop(Phaser.Timer.SECOND/100, updateCounter, this);
+    myLoop = game.time.events.loop(Phaser.Timer.SECOND/50, updateCounter, this);
     
 }
 
@@ -141,10 +138,12 @@ function actionOnClickStop () {
     spinning2 = false;
     kocnica2 = true;
     stop(2);
+    fxroll.stop();
 
     kocnica3 = true;
     spinning3 = false;
     stop(3);
+
 
 }
 function update() {
@@ -179,30 +178,30 @@ function updateCounter() {
         btnStop.visible = true;
 
     }
-    if (spinning3 === false) {
+    if (spinning3 == false) {
         button.visible = true;
         btnStop.visible = false;
     }
 
-    if ((brojac >=150) && (spinning1 === true)) {
+    if ((brojac >=150) && (spinning1 == true)) {
         spinning1 = false;
         kocnica1 = true;
         stop(1);
     }
-    if ((brojac >200) && (spinning2 === true)) {
+    if ((brojac >200) && (spinning2 == true)) {
         spinning2 = false;
         kocnica2 = true;
         stop(2);
     }
-    if ((brojac >250) && (spinning3 === true)) {
+    if ((brojac >250) && (spinning3 == true)) {
         fxroll.stop();
         kocnica3 = true;
         spinning3 = false;
         stop(3);
     }
 
-    if (spinning1 === true) {
-        if (kocnica1 === false) {
+    if (spinning1 == true) {
+        if (kocnica1 == false) {
             tocak1tmp.y +=30;
             tocak1.y = tocak1tmp.y;
             if (tocak1tmp.y > 80) {
@@ -210,8 +209,8 @@ function updateCounter() {
             }
         }
     }
-    if (spinning2 === true) {
-        if (kocnica2 === false) {
+    if (spinning2 == true) {
+        if (kocnica2 == false) {
             tocak2tmp.y +=35;
             tocak2.y = tocak2tmp.y;
             if (tocak2tmp.y > 80) {
@@ -219,8 +218,8 @@ function updateCounter() {
             }
         }
     }
-    if (spinning3 === true) {
-        if (kocnica3 === false) {
+    if (spinning3 == true) {
+        if (kocnica3 == false) {
             tocak3tmp.y +=30;
             tocak3.y = tocak3tmp.y;
             if (tocak3tmp.y > 80) {
@@ -236,26 +235,32 @@ function updateCounter() {
 function vockice() {
     var body = game.add.sprite(10,75, 'machine_body');
 
-    tocak1 = game.add.group(); // prvi tocak.
-    tocak1tmp = game.add.group();
-    tocak2 = game.add.group();
-    tocak2tmp = game.add.group();
-    tocak3 = game.add.group();
-    tocak3tmp = game.add.group();
-    tocak4 = game.add.group();
-    tocak4tmp = game.add.group();
-    tocak5 = game.add.group();
-    tocak5tmp = game.add.group();
+    tocak1      = game.add.group(); // prvi tocak.
+    tocak1tmp   = game.add.group();
+    tocak2      = game.add.group();
+    tocak2tmp   = game.add.group();
+    tocak3      = game.add.group();
+    tocak3tmp   = game.add.group();
+    tocak4      = game.add.group();
+    tocak4tmp   = game.add.group();
+    tocak5      = game.add.group();
+    tocak5tmp   = game.add.group();
     
     for(var i = 0; i < 12; i++) {
-        sprite1 = tocak1.create(115, i * 150 +50, items[game.rnd.integerInRange(0,17)]);
-        sprite1t = tocak1tmp.create(sprite1.x, sprite1.y, items_b[game.rnd.integerInRange(0,17)]);
+        //sa x odredjujemo slucajan niz vockica za svaki tocak i za njegov blur ekvivalent
+        var x1  = game.rnd.integerInRange(0,17);
+        var x2 = game.rnd.integerInRange(0,17);
+        var x3 = game.rnd.integerInRange(0,17);
 
-        sprite2 = tocak2.create(345, i * 150 +50, items[game.rnd.integerInRange(0,17)]);
-        sprite2t = tocak2tmp.create(sprite2.x, sprite2.y, items_b[game.rnd.integerInRange(0,17)]);
+        tocak1.create       (115, i * 150 +50, items[x1]);
+        tocak1tmp.create    (115, i * 150 +50, items_b[x1]);
+        tocak2.create       (345, i * 150 +50, items[x2]);
+        tocak2tmp.create    (345, i * 150 +50, items_b[x2]);
+        tocak3.create       (605, i * 150 +50, items[x3]);
+        tocak3tmp.create    (605, i * 150 +50, items_b[x3]);
         
-        sprite3 = tocak3.create(605, i * 150 +50, items[game.rnd.integerInRange(0,17)]);
-        sprite3t = tocak3tmp.create(sprite3.x, sprite3.y, items_b[game.rnd.integerInRange(0,17)]);
+        //sprite3 = tocak3.create(605, i * 150 +50, items[game.rnd.integerInRange(0,17)]);
+        //spritet = tocak3tmp.create(sprite3.x, sprite3.y, items_b[game.rnd.integerInRange(0,17)]);
 
         // sprite4 = tocak4.create(425, i * 150 +50, items[game.rnd.integerInRange(0,16)]);
         // sprite4t = tocak4tmp.create(sprite4.x, sprite4.y, sprite4.key, sprite4.frame);
@@ -278,10 +283,28 @@ function vockice() {
     btnStop  = game.add.button(game.world.centerX + 265, game.world.height-150, 'btnStop', actionOnClickStop, this, 2, 1, 0);
     //button.anchor.setTo(0.5,0.5);  
     btnStop.visible = false;
-
 }
-function stop(i) {
 
+function stop(i) {
+    //funkcija za zaustavljanje
+    
+
+    //uzima nove vrijednosti (mjesanje pred stop)
+    if (i == 1) {
+        tocak1.destroy();
+        tocak1tmp.destroy();
+        tocak2.destroy();
+        tocak2tmp.destroy();
+        tocak3.destroy();
+        tocak3tmp.destroy();
+        vockice();  
+        tocak1.visible = false;
+        tocak1tmp.visible = true;
+        tocak2.visible = false;
+        tocak2tmp.visible = true;
+        tocak3.visible = false;
+        tocak3tmp.visible = true;
+    }
     var otklon = 30; //ovo je ukoliko mreza nije po PS, tj. ako nije pocela od 0, 150, 300
     var gridsize = 150;  //kao sto samo ime kaze..
     coor_y = gridsize * (Math.round(eval("tocak" + i + ".y")/gridsize))-otklon;
@@ -326,27 +349,23 @@ function povuci() {
             //tween to the relative value of newNumber
             TweenMax.to(strip1, 4, {y:String(newNumber), onComplete:showBtn});
     */
-    tocak1.destroy();
-    tocak1tmp.destroy();
-    tocak2.destroy();
-    tocak2tmp.destroy();
-    tocak3.destroy();
-    tocak3tmp.destroy();
-    vockice();
-    brojac = 0;
+
     spinning1 = true;
     spinning2 = true;
     spinning3 = true;
     kocnica1 = false; 
     kocnica2 = false; 
     kocnica3 = false;
-    
+
     tocak1.visible = false;
     tocak1tmp.visible = true;
     tocak2.visible = false;
     tocak2tmp.visible = true;
     tocak3.visible = false;
     tocak3tmp.visible = true;
+
+    brojac = 0;
+
 
     //tween = game.add.tween(ball).to( { y: game.world.height - ball.height }, 1500, Phaser.Easing.Bounce.Out, true, 2500, 10);
 
